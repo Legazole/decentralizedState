@@ -1,11 +1,20 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const multiSigAddress = process.env.ADDRESS;
-  const usdcAddress = process.env.USDC_ADDRESS;
+  const multiSigAddress: string = process.env.ADDRESS!;
+  const usdcAddress: string = process.env.USDC_ADDRESS!;
+  const askingPrice: number = 1;
+  const amountOfShares: number = 5;
+  const baseURI: string = "";
 
   const Property = await ethers.getContractFactory("Property");
-  const property = await Property.deploy(multiSigAddress, usdcAddress);
+  const property = await Property.deploy(
+    multiSigAddress,
+    usdcAddress,
+    askingPrice,
+    amountOfShares,
+    baseURI
+  );
 
   await property.deployed();
 
