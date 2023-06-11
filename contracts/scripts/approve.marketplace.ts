@@ -3,9 +3,7 @@ async function approveMarketplace(
   propertyAddress: string
 ) {
   // Connect to the Ethereum network
-  const provider = new ethers.providers.JsonRpcProvider(
-    process.env.SEPOLIA_RPC
-  );
+  const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_RPC);
   const wallet = new ethers.Wallet(process.env.HERO_PRIVATE_KEY, provider);
 
   // Get the contract instance
@@ -13,12 +11,15 @@ async function approveMarketplace(
   const tokenContract = new ethers.Contract(propertyAddress, abi, wallet);
 
   // Approve allowance
-  const approveTx = await tokenContract.setApprovalForAll(spenderAddress, true);
+  const approveTx = await tokenContract.setApprovalForAll(
+    marketplaceAddress,
+    true
+  );
 
   // Wait for the transaction to be mined
   await approveTx.wait();
 
-  console.log(`marketplace can now transfer tokens`);
+  console.log(`marketplace can now transfer erc1155 tokens`);
 }
 
 // Example usage

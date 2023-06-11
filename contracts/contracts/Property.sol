@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155Supply.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 
-contract Property is ERC1155URIStorage,Ownable, ReentrancyGuard{
+contract Property is ERC1155URIStorage,Ownable, ReentrancyGuard,IERC1155Receiver{
 
     event SharePurchased(address buyer, uint256 share);
     event ShareTransferred(address from, address to, uint256 share);
@@ -17,13 +17,13 @@ contract Property is ERC1155URIStorage,Ownable, ReentrancyGuard{
     event UpdateURI(address receiver,uint256 share);
 
     IERC20 public usdcToken;
-    address public constant marketplace = 0x0b0abfFF2e505955d366112Ab9042B68BeDe5260;
+    address public constant marketplace = 0x19B3ac8146b052d93f4fC666dA4e1c9E2d96605b;
 
     uint256 public counter = 0;
     mapping(uint256 => uint256) public pricePerShare;
 
     
-    constructor(address _multisigWallet, address usdcAddress, uint256 _askingPrice, uint256 _amountOfShares, string memory baseURI) ERC1155(baseURI) {
+    constructor(address _multisigWallet, address usdcAddress, uint256 _askingPrice, uint256 _amountOfShares, string memory baseURI) ERC1155(baseURI)  {
         transferOwnership(_multisigWallet);
         usdcToken = IERC20(usdcAddress);
 
@@ -34,7 +34,7 @@ contract Property is ERC1155URIStorage,Ownable, ReentrancyGuard{
         }
 
         _setApprovalForAll(address(this),marketplace,true);
-
+        usdcToken.approve(marketplace,1000000000);
     }
 
    
@@ -60,5 +60,25 @@ contract Property is ERC1155URIStorage,Ownable, ReentrancyGuard{
 
     function _setShareURI(uint256 _share, string memory tokenURI) external onlyOwner{
         _setURI(_share, tokenURI);
+    }
+
+    function onERC1155Received(
+        address operator,
+        address from,
+        uint256 id,
+        uint256 value,
+        bytes calldata data
+    ) external pure override returns (bytes4){
+        return this.onERC1155Received.selector;
+    }
+
+    function onERC1155BatchReceived(
+        address operator,
+        address from,
+        uint256[] calldata ids,
+        uint256[] calldata values,
+        bytes calldata data
+    ) external pure override returns (bytes4) {
+        return this.onERC1155BatchReceived.selector;
     }
 }

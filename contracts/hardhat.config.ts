@@ -26,6 +26,10 @@ const config: HardhatUserConfig = {
       url: process.env.SEPOLIA_RPC,
       accounts: [process.env.MM_PRIVATE_KEY!],
     },
+    goerli: {
+      url: process.env.GOERLI_RPC,
+      accounts: [process.env.MM_PRIVATE_KEY!],
+    },
     moonbeam: {
       url: "https://rpc.api.moonbeam.network",
     },

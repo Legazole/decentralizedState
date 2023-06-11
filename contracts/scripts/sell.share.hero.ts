@@ -57,18 +57,10 @@ async function main(share: number) {
   const sharePrice = await propertyContract.getPriceForShare(share);
 
   console.log(
-    `\n\nyou are about to buy share: ${share}\nFor a price of ${sharePrice}`
+    `\n\nyou are about to sell share: ${share}\nFor a price of ${sharePrice}`
   );
 
-  console.log(
-    `the marketplace contract can currently spend ${await usdcContract.allowance(
-      walletAdress,
-      marketplaceAddress
-    )} usdc from wallet`
-  );
-
-  await approvePropertyContract();
-  await buyShare(share, marketplaceContract, propertyContract);
+  await sellShare(share, marketplaceContract, propertyContract);
 
   const amountOfShare1OwnedByWallet = await propertyContract.balanceOf(
     walletAdress,
@@ -77,24 +69,12 @@ async function main(share: number) {
   console.log(amountOfShare1OwnedByWallet);
 }
 
-async function approvePropertyContract() {}
-
-async function buyShare(share: number, marketplace: any, property: any) {
-  await marketplace.setPropertyContract(property.address);
-
-  const b = await property.isApprovedForAll(
-    property.address,
-    marketplace.address
-  );
-  console.log(b);
-
-  console.log("buying share...");
-  const tx = await marketplace.buyShare(share);
+async function sellShare(share: number, marketplace: any, property: any) {
+  console.log("selling share...");
+  const tx = await marketplace.sellShare(share);
   await tx.wait(1);
-  console.log("share bought");
+  console.log("share sold");
 }
-
-async function sendNewEncryption() {}
 
 main(1).catch((error) => {
   console.error(error);

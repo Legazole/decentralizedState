@@ -1,9 +1,7 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const provider = new ethers.providers.JsonRpcProvider(
-    process.env.SEPOLIA_RPC
-  );
+  const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_RPC);
   const owner = new ethers.Wallet(process.env.MM_PRIVATE_KEY!, provider);
   const ownerAddress = await owner.getAddress();
   const contractAddress: string | undefined = process.env.PROPERTY_ADDRESS!;

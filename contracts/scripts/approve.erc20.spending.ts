@@ -6,9 +6,7 @@ async function approveAllowance(
   amount: number
 ) {
   // Connect to the Ethereum network
-  const provider = new ethers.providers.JsonRpcProvider(
-    process.env.SEPOLIA_RPC
-  );
+  const provider = new ethers.providers.JsonRpcProvider(process.env.GOERLI_RPC);
   const wallet = new ethers.Wallet(process.env.HERO_PRIVATE_KEY, provider);
 
   // Get the contract instance

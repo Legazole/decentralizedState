@@ -124,12 +124,12 @@ contract PropertyMarketplace is Ownable, ReentrancyGuard {
     function sellShare(uint256 _share) external nonReentrant {
         uint256 sharePrice = propertyContract.getPriceForShare(_share);
         require(propertyContract.balanceOf(msg.sender,_share)>0);
-        require(usdcToken.balanceOf(address(propertyContract))>sharePrice, "not enough funds to sell to contract, please list share");
+        require(usdcToken.balanceOf(address(propertyContract))>=sharePrice, "not enough funds to sell to contract, please list share");
 
-        propertyContract.safeTransferFrom(msg.sender,address(this),_share,1,"");
-        usdcToken.transferFrom(address(this),msg.sender,sharePrice);
+        propertyContract.safeTransferFrom(msg.sender,address(propertyContract),_share,1,"");
+        usdcToken.transferFrom(address(propertyContract),msg.sender,sharePrice);
 
-        emit UpdateURI(address(this),_share);
+        emit UpdateURI(address(propertyContract),_share);
     }
 
 
