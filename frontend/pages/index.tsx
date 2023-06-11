@@ -7,6 +7,7 @@ import ConnectModal from "../components/connect-wallet-modal";
 import ClickableEthAddress from "../components/clickable-eth-address";
 import Caroussel from "../components/caroussel";
 import MenuSection from "../components/MenuSection";
+import CardContainer from '@/components/CardContainer';
 
 export default function Home() {
   const section1Ref = useRef<HTMLDivElement>(null);
@@ -65,7 +66,9 @@ export default function Home() {
         </Main>
         <Footer>Made with ❤️ by The <strong>Winning TEAM</strong> - 2023</Footer>
       </LandingPage>
-      <MenuSection active={isSection2Active} />
+
+      <CardContainer />
+      {/* <MenuSection active={isSection2Active} /> */}
     </Container>
   );
 }

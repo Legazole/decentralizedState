@@ -3,6 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
   display: flex;
   flex-direction: column;
+  /* position: relative; */
   height: 100%;
 `;
 
@@ -77,7 +78,6 @@ export const Header = styled.header`
   background-repeat: no-repeat;
   background-size: cover;
 `;
-
 
 export const Grid = styled.div`
   background-color: rgba(189, 185, 183, 0.6);
