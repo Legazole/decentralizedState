@@ -17,7 +17,7 @@ contract Property is ERC1155URIStorage,Ownable, ReentrancyGuard{
     event UpdateURI(address receiver,uint256 share);
 
     IERC20 public usdcToken;
-    address public constant marketplace = 0xA4348e0D9704FE9614cbE4F5EB0d6640cCD4864A;
+    address public constant marketplace = 0x0b0abfFF2e505955d366112Ab9042B68BeDe5260;
 
     uint256 public counter = 0;
     mapping(uint256 => uint256) public pricePerShare;
