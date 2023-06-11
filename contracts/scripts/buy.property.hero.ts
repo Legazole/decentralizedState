@@ -82,17 +82,18 @@ async function main(share: number) {
 async function approvePropertyContract() {}
 
 async function buyShare(share: number, marketplace: any, property: any) {
+  await marketplace.setPropertyContract(property.address);
+
   const b = await property.isApprovedForAll(
     property.address,
     marketplace.address
   );
   console.log(b);
-  /* 
+
   console.log("buying share...");
   const tx = await marketplace.buyShare(share);
   await tx.wait(1);
   console.log("share bought");
-*/
 }
 
 async function sendNewEncryption() {}

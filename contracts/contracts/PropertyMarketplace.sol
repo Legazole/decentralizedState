@@ -35,7 +35,7 @@ contract PropertyMarketplace is Ownable, ReentrancyGuard {
         usdcToken = IERC20(usdcAddress);
     }
 
-    function setPropertyContract(address propertyAddress)external onlyOwner{
+    function setPropertyContract(address propertyAddress)external {
         propertyContract = Property(propertyAddress);
     }
 
@@ -113,14 +113,32 @@ contract PropertyMarketplace is Ownable, ReentrancyGuard {
         require(usdcToken.balanceOf(msg.sender)>= totalPrice, "Insufficient funds");
         require(usdcToken.allowance(msg.sender,address(this)) >= totalPrice,"Insufficient allowance");
 
-        bool usdcTradeSucces = usdcToken.transferFrom(msg.sender,address(this),totalPrice);
+        bool usdcTradeSucces = usdcToken.transferFrom(msg.sender,address(propertyContract),totalPrice);
         require(usdcTradeSucces,"USDC transfer failed");
 
         propertyContract.safeTransferFrom(address(propertyContract),msg.sender,_shareId,1,"");
 
-        require(propertyContract.balanceOf(msg.sender, _shareId) >0, "nft not transferred");
-
         emit UpdateURI(msg.sender,_shareId);
     }
 
+    function sellShare(uint256 _share) external nonReentrant {
+        uint256 sharePrice = propertyContract.getPriceForShare(_share);
+        require(propertyContract.balanceOf(msg.sender,_share)>0);
+        require(usdcToken.balanceOf(address(propertyContract))>sharePrice, "not enough funds to sell to contract, please list share");
+
+        propertyContract.safeTransferFrom(msg.sender,address(this),_share,1,"");
+        usdcToken.transferFrom(address(this),msg.sender,sharePrice);
+
+        emit UpdateURI(address(this),_share);
+    }
+
+
+    //implement the escrow functionality
+    function transferShare(address to, uint256 _share) external{
+        require(to != address(0), "Invalid recipient address");
+
+        propertyContract.safeTransferFrom(msg.sender, to, _share, 1, "");
+        
+        emit UpdateURI(to,_share);
+    }
 }
