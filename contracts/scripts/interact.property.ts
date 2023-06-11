@@ -14,12 +14,6 @@ async function main() {
     owner
   );
 
-  const amountOfSharesForAddress = await property.doesAddressOwnShare(
-    1,
-    ownerAddress
-  );
-  console.log(amountOfSharesForAddress);
-
   const contractOwner = await property.owner();
   console.log(contractOwner);
 

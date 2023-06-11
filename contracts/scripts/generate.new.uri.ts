@@ -16,10 +16,7 @@ async function main() {
 
   const updateURIEvent = property.filters.UpdateURI();
 
-  property.on(updateURIEvent, (receiver, share) => {
-    console.log(receiver);
-    console.log(share);
-  });
+  //property.on(updateURIEvent, (receiver: string, share: number) => {});
 }
 
 main().catch((error) => {
